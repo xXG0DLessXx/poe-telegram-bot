@@ -16,11 +16,13 @@ This is a Telegram bot that allows you to interact with AI models from the websi
 3. Create a `.env` file in the root directory of the project and add the following environment variables:
    - `BOT_TOKEN` - Your Telegram bot token obtained from BotFather.
    - `POE_COOKIE` - Your poe.com "p-b" cookie obtained from your browser's developer tools.
+   - `DEFAULT_MODEL` - (OPTIONAL) Allows setting a default model to be used when starting the bot. Default if not set, is "capybara" also known as Sage.
    - `POE_HEADERS` - (OPTIONAL) Sets the headers used for the browser agent (Lowers chance of getting banned if you use the headers of your own browser). You can get them [here](https://headers.uniqueostrich18.repl.co/).
 ### Example .env
 ```
 BOT_TOKEN=<YOUR TELEGRAM TOKEN>
 POE_COOKIE=<YOUR POE.COM p-b COOKIE>
+DEFAULT_MODEL=<MODEL IDENTIFIER e.g one of these: {'capybara': 'Sage', 'beaver': 'GPT-4', 'a2_2': 'Claude+', 'a2': 'Claude', 'chinchilla': 'ChatGPT', 'nutria': 'Dragonfly'}>
 POE_HEADERS=<(OPTIONAL LEAVE EMPTY IF NOT DESIRED) YOUR BROWSER HEADERS (Example: "{
   "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0",
   "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
@@ -35,8 +37,8 @@ POE_HEADERS=<(OPTIONAL LEAVE EMPTY IF NOT DESIRED) YOUR BROWSER HEADERS (Example
 
 ## Usage
 - `/start` - Start the bot and receive a welcome message.
-- `/reset` - Purge the entire conversation with the selected bot/model.
-- `/clear` - Clear the context with the selected bot/model.
+- `/purge` - Purge the entire conversation with the selected bot/model.
+- `/reset` - Clear/Reset the context with the selected bot/model.
 - `/select` - Select a bot/model to use for the conversation.
 - `/help` - Show the available commands.
 - Send any text message to the bot and receive a response from the selected bot/model. In group chats, the bot will only respond to messages that mention the bot or are replies to its messages.

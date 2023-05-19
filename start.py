@@ -17,10 +17,11 @@ def create_virtual_env():
 def install_dependencies():
     """Install the required packages from the requirements.txt file."""
     try:
-        subprocess.check_call([os.path.join('env', 'bin', 'pip'), 'install', '-r', 'requirements.txt'])
+        subprocess.check_call([os.path.join('env', 'bin', 'python'), '-m', 'pip', 'install', '-r', 'requirements.txt'])
     except subprocess.CalledProcessError as e:
         print('Error installing dependencies:', e)
         sys.exit(1)
+
 
 if __name__ == '__main__':
     # Create the virtual environment
@@ -29,5 +30,11 @@ if __name__ == '__main__':
     # Install the required packages
     install_dependencies()
 
+    # Determine the Python executable based on the current platform
+    if platform.system() == 'Windows':
+        python_executable = os.path.join('env', 'Scripts', 'python')
+    else:
+        python_executable = os.path.join('env', 'bin', 'python')
+
     # Run PoeTelegramBot.py within the virtual environment
-    subprocess.check_call([os.path.join('env', 'bin', 'python'), 'PoeTelegramBot.py'])
+    subprocess.check_call([python_executable, 'PoeTelegramBot.py'])

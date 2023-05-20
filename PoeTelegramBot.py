@@ -22,6 +22,8 @@ load_dotenv()
 # Get environment variables
 TELEGRAM_TOKEN = os.getenv("BOT_TOKEN")
 POE_COOKIE = os.getenv("POE_COOKIE")
+ALLOWED_USERS = os.getenv("ALLOWED_USERS")
+ALLOWED_CHATS = os.getenv("ALLOWED_CHATS")
 
 # Check if environment variables are set
 if not TELEGRAM_TOKEN:
@@ -49,7 +51,26 @@ default_model = os.getenv("DEFAULT_MODEL")
 # Set the default model
 selected_model = default_model if default_model else "capybara"
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def start(update: Update, context: CallbackContext) -> None:
+    user_id = update.effective_user.id
+    chat_id = update.effective_chat.id
+
+    if ALLOWED_CHATS and str(chat_id) not in ALLOWED_CHATS.split(","):
+        # Deny access if the chat is not in the allowed chats list
+        await context.bot.send_message(
+            chat_id=chat_id,
+            text="Sorry, you are not allowed to use this bot in this chat. If you are the one who set up this bot, use it in the \"ALLOWED_CHATS\" you specified, or add your Telegram UserID to the \"ALLOWED_USERS\" environment variable in your .env file."
+        )
+        return
+
+    if ALLOWED_USERS and str(user_id) not in ALLOWED_USERS.split(","):
+        # Deny access if user is not in the allowed users list
+        await context.bot.send_message(
+            chat_id=chat_id,
+            text="Sorry, you are not allowed to use this bot. If you are the one who set up this bot, add your Telegram UserID to the \"ALLOWED_USERS\" environment variable in your .env file."
+        )
+        return
+
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
         text="I'm a Poe.com Telegram Bot. Use /help for a list of commands.",
@@ -123,6 +144,16 @@ async def button_callback(update: Update, context: CallbackContext):
 
 async def process_message(update: Update, context: CallbackContext) -> None:
     message = update.message
+    user_id = message.from_user.id
+    chat_id = message.chat.id
+
+    if ALLOWED_CHATS and str(chat_id) not in ALLOWED_CHATS.split(",") and str(user_id) not in ALLOWED_USERS.split(","):
+        # Deny access if the user is not in the allowed users list and the chat is not in the allowed chats list
+        await context.bot.send_message(
+            chat_id=chat_id,
+            text="Sorry, you are not allowed to use this bot. If you are the one who set up this bot, add your Telegram UserID to the \"ALLOWED_USERS\" environment variable in your .env file."
+        )
+        return
 
     try:
         # Check if the message mentions the bot or is a reply to the bot

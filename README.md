@@ -18,6 +18,8 @@ This is a Telegram bot that allows you to interact with AI models from the websi
    - `POE_COOKIE` - Your poe.com "p-b" cookie obtained from your browser's developer tools.
    - `DEFAULT_MODEL` - (OPTIONAL) Allows setting a default model to be used when starting the bot. Default if not set, is "capybara" also known as Sage.
    - `POE_HEADERS` - (OPTIONAL) Sets the headers used for the browser agent (Lowers chance of getting banned if you use the headers of your own browser). You can get them [here](https://headers.uniqueostrich18.repl.co/).
+   - `ALLOWED_USERS` - (OPTIONAL) Comma-separated list of allowed Telegram user IDs. If specified, only these users will be allowed to use the bot. If not specified, all users will be allowed.
+   - `ALLOWED_CHATS` - (OPTIONAL) Comma-separated list of allowed Telegram chat IDs. If specified, the bot can be used by anyone in these chats. If not specified, the bot can be used by anyone in any chat.
 ### Example .env
 ```
 BOT_TOKEN=<YOUR TELEGRAM TOKEN>
@@ -31,6 +33,8 @@ POE_HEADERS=<(OPTIONAL LEAVE EMPTY IF NOT DESIRED) YOUR BROWSER HEADERS (Example
   "Te": "trailers",
   "Upgrade-Insecure-Requests": "1"
 }")>
+ALLOWED_USERS=<COMMA-SEPARATED LIST OF ALLOWED USER IDS (Exampe ID's:1234567890,9876543210)>
+ALLOWED_CHATS=<COMMA-SEPARATED LIST OF ALLOWED CHAT IDS (Example ID's:-1001234567890,-1009876543210)>
 ```
 
 7. Run the bot using `python3 start.py`. (It should install all needed dependencies automatically in a virtual environment).

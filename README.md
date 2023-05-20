@@ -44,6 +44,8 @@ ALLOWED_CHATS=<COMMA-SEPARATED LIST OF ALLOWED CHAT IDS (Example ID's:-100123456
 - `/purge` - Purge the entire conversation with the selected bot/model.
 - `/reset` - Clear/Reset the context with the selected bot/model.
 - `/select` - Select a bot/model to use for the conversation.
+- `/setcookie <cookie>` - Set the POE cookie value.
+- `/restart` - Restart the bot and set everything back to the default.
 - `/help` - Show the available commands.
 - Send any text message to the bot and receive a response from the selected bot/model. In group chats, the bot will only respond to messages that mention the bot or are replies to its messages.
 

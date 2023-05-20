@@ -142,6 +142,59 @@ async def button_callback(update: Update, context: CallbackContext):
     except Exception as e:
         await handle_error(update, context, e)
 
+async def set_cookie(update: Update, context: CallbackContext):
+    user_id = update.effective_user.id
+
+    if ALLOWED_USERS and str(user_id) not in ALLOWED_USERS.split(","):
+        # Deny access if user is not in the allowed users list
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text="Sorry, you are not allowed to use this command. If you are the one who set up this bot, add your Telegram UserID to the \"ALLOWED_USERS\" environment variable in your .env file."
+        )
+        return
+
+    # Get the cookie value from the command message
+    command_parts = update.message.text.split()
+    if len(command_parts) != 2:
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text="Please provide the cookie value in the format: /setcookie <cookie>"
+        )
+        return
+
+    cookie = command_parts[1]
+
+    # Set the "POE_COOKIE" for the poe Client
+    client = poe.Client(cookie)
+
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text="POE cookie set successfully."
+    )
+
+async def restart_bot(update: Update, context: CallbackContext):
+    user_id = update.effective_user.id
+
+    if ALLOWED_USERS and str(user_id) not in ALLOWED_USERS.split(","):
+        # Deny access if user is not in the allowed users list
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text="Sorry, you are not allowed to use this command. If you are the one who set up this bot, add your Telegram UserID to the \"ALLOWED_USERS\" environment variable in your .env file."
+        )
+        return
+
+    # Reset the "POE_COOKIE" of the poe Client to default.
+    client = poe.Client(POE_COOKIE)
+
+    # Clear the selected model
+    global selected_model
+    selected_model = default_model if default_model else "capybara"
+
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text="Bot restarted and settings set back to default."
+    )
+
 async def process_message(update: Update, context: CallbackContext) -> None:
     message = update.message
     user_id = message.from_user.id
@@ -239,12 +292,15 @@ async def help_command(update: Update, context: CallbackContext) -> None:
         "/purge - Purge the entire conversation with the selected bot/model.\n"
         "/reset - Clear/Reset the context with the selected bot/model.\n"
         "/select - Select a bot/model to use for the conversation.\n"
+        "/setcookie <cookie> - Set the POE cookie value.\n"
+        "/restart - Restart the bot and set everything back to the default.\n"
         "/help - Show this help message."
     )
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
         text=help_text,
     )
+
 
 async def handle_error(update: Update, context: CallbackContext, exception: Exception):
     logging.error("An error occurred: %s", str(exception))
@@ -264,6 +320,8 @@ if __name__ == "__main__":
     message_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), process_message)
     button_handler = CallbackQueryHandler(button_callback)
     help_handler = CommandHandler("help", help_command)
+    set_cookie_handler = CommandHandler("setcookie", set_cookie)
+    restart_handler = CommandHandler("restart", restart_bot)
 
     application.add_handler(start_handler)
     application.add_handler(reset_handler)
@@ -272,5 +330,7 @@ if __name__ == "__main__":
     application.add_handler(message_handler)
     application.add_handler(button_handler)
     application.add_handler(help_handler)
+    application.add_handler(set_cookie_handler)
+    application.add_handler(restart_handler)
 
     application.run_polling()

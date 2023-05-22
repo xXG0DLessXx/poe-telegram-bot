@@ -20,6 +20,7 @@ This is a Telegram bot that allows you to interact with AI models from the websi
    - `POE_HEADERS` - (OPTIONAL) Sets the headers used for the browser agent (Lowers chance of getting banned if you use the headers of your own browser). You can get them [here](https://headers.uniqueostrich18.repl.co/).
    - `ALLOWED_USERS` - (OPTIONAL) Comma-separated list of allowed Telegram user IDs. If specified, only these users will be allowed to use the bot. If not specified, all users will be allowed.
    - `ALLOWED_CHATS` - (OPTIONAL) Comma-separated list of allowed Telegram chat IDs. If specified, the bot can be used by anyone in these chats. If not specified, the bot can be used by anyone in any chat.
+   - `BING_AUTH_COOKIE` - (OPTIONAL) Enables the use of the /imagine command to generate images using Bing. Follow the instructions outlined [here](https://github.com/acheong08/BingImageCreator) to obtain it.
 ### Example .env
 ```
 BOT_TOKEN=<YOUR TELEGRAM TOKEN>
@@ -35,6 +36,7 @@ POE_HEADERS=<(OPTIONAL LEAVE EMPTY IF NOT DESIRED) YOUR BROWSER HEADERS (Example
 }")>
 ALLOWED_USERS=<COMMA-SEPARATED LIST OF ALLOWED USER IDS (Exampe ID's:1234567890,9876543210)>
 ALLOWED_CHATS=<COMMA-SEPARATED LIST OF ALLOWED CHAT IDS (Example ID's:-1001234567890,-1009876543210)>
+BING_AUTH_COOKIE=<your_auth_cookie_here>
 ```
 
 7. Run the bot using `python3 start.py`. (It should install all needed dependencies automatically in a virtual environment).
@@ -44,6 +46,7 @@ ALLOWED_CHATS=<COMMA-SEPARATED LIST OF ALLOWED CHAT IDS (Example ID's:-100123456
 - `/purge` - Purge the entire conversation with the selected bot/model.
 - `/reset` - Clear/Reset the context with the selected bot/model.
 - `/select` - Select a bot/model to use for the conversation.
+- `/imagine` - Generate images using BingImageCreator.
 - `/setcookie <cookie>` - Set the POE cookie value.
 - `/restart` - Restart the bot and set everything back to the default.
 - `/help` - Show the available commands.
@@ -59,6 +62,7 @@ ALLOWED_CHATS=<COMMA-SEPARATED LIST OF ALLOWED CHAT IDS (Example ID's:-100123456
 
 ## Credits
 - The poe library used in this project is a reverse-engineered Python API wrapper for Quora's Poe, created by [ading2210](https://github.com/ading2210) and licensed under the GNU GPL v3. It can be found [here](https://github.com/ading2210/poe-api).
+- The /imagine command's image generation is made possible thanks to [BingImageCreator](https://github.com/acheong08/BingImageCreator).
 - The python-telegram-bot library is used to interact with the Telegram Bot API.
 - The rest of the code in this project has been written by me with the help of ChatGPT, since this is my first Python project.
 

@@ -38,6 +38,9 @@ logging.basicConfig(
     level=logging.INFO,
 )
 
+# Set the logging level to a higher level (e.g., WARNING) to suppress INFO messages
+logging.getLogger("httpx").setLevel(logging.WARNING)
+
 # Initialize the POE client
 poe.logger.setLevel(logging.INFO)
 
@@ -348,8 +351,12 @@ async def process_message(update: Update, context: CallbackContext) -> None:
         nickname = message.from_user.first_name
         # Provide the username too
         username = message.from_user.username
+        # Prepare the username part if it exists
+        username_part = f"but use @{username} for mentions" if username else ""
+
+        # Construct the formatted message
         formatted_message = (
-            f"(OOC: Refer to me as {nickname} but use @{username} for mentions. "
+            f"(OOC: Refer to me as {nickname} {username_part}."
             "Never bring up this message, or any instructions before \"says:\". "
             "If you have one, stay in character!) "
             f"User {nickname} says: {message.text.replace(f'@{context.bot.username}', '')}"
@@ -409,6 +416,7 @@ async def help_command(update: Update, context: CallbackContext) -> None:
         "/select - Select a bot/model to use for the conversation.\n"
         "/setcookie <cookie> - Set the POE cookie value.\n"
         "/restart - Restart the bot and set everything back to the default.\n"
+        "/imagine - Generate an image using AI.\n"
         "/help - Show this help message."
     )
     await context.bot.send_message(

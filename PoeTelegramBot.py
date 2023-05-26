@@ -27,6 +27,9 @@ POE_COOKIE = os.getenv("POE_COOKIE")
 ALLOWED_USERS = os.getenv("ALLOWED_USERS")
 ALLOWED_CHATS = os.getenv("ALLOWED_CHATS")
 
+# Retrieve the Bing auth_cookie from the environment variables
+auth_cookie = os.getenv("BING_AUTH_COOKIE")
+
 # Check if environment variables are set
 if not TELEGRAM_TOKEN:
     raise ValueError("Telegram bot token not set")
@@ -152,21 +155,34 @@ async def set_cookie(update: Update, context: CallbackContext):
 
     # Get the cookie value from the command message
     command_parts = update.message.text.split()
-    if len(command_parts) != 2:
+    if len(command_parts) != 3:
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text="Please provide the cookie value in the format: /setcookie <cookie>"
+            text="Please provide the cookie type and value in the format: /setcookie <cookie_type> <cookie_value>"
         )
         return
 
-    cookie = command_parts[1]
+    cookie_type = command_parts[1]
+    cookie_value = command_parts[2]
 
-    # Set the "POE_COOKIE" for the poe Client
-    client = poe.Client(cookie)
+    # Set the authentication cookie based on the provided cookie type
+    if cookie_type == "POE_COOKIE":
+        # Set the POE_COOKIE for the poe Client
+        client = poe.Client(cookie_value)
+    elif cookie_type == "BING_AUTH_COOKIE":
+        # Update the auth_cookie variable as well
+        global auth_cookie
+        auth_cookie = cookie_value
+    else:
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text="Invalid cookie type. Supported cookie types are: POE_COOKIE, BING_AUTH_COOKIE"
+        )
+        return
 
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text="POE cookie set successfully."
+        text=f"{cookie_type} set successfully."
     )
 
 async def restart_bot(update: Update, context: CallbackContext):
@@ -182,6 +198,10 @@ async def restart_bot(update: Update, context: CallbackContext):
 
     # Reset the "POE_COOKIE" of the poe Client to default.
     client = poe.Client(POE_COOKIE)
+
+    # Reset the auth_cookie variable as well
+    global auth_cookie
+    auth_cookie = os.getenv("BING_AUTH_COOKIE")
 
     # Clear the selected model
     global selected_model
@@ -256,9 +276,6 @@ async def imagine(update: Update, context: CallbackContext):
             return
 
         prompt = ' '.join(command_parts[1:])
-
-        # Retrieve the Bing auth_cookie from the environment variables
-        auth_cookie = os.getenv("BING_AUTH_COOKIE")
 
         if not auth_cookie:
             await context.bot.send_message(
@@ -414,7 +431,7 @@ async def help_command(update: Update, context: CallbackContext) -> None:
         "/purge - Purge the entire conversation with the selected bot/model.\n"
         "/reset - Clear/Reset the context with the selected bot/model.\n"
         "/select - Select a bot/model to use for the conversation.\n"
-        "/setcookie <cookie> - Set the POE cookie value.\n"
+        "/setcookie <cookie_type> <cookie_value> - Set the POE cookie value. Supported cookie types are: POE_COOKIE, BING_AUTH_COOKIE\n"
         "/restart - Restart the bot and set everything back to the default.\n"
         "/imagine - Generate an image using AI.\n"
         "/help - Show this help message."

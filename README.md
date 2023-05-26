@@ -47,7 +47,7 @@ BING_AUTH_COOKIE=<your_auth_cookie_here>
 - `/reset` - Clear/Reset the context with the selected bot/model.
 - `/select` - Select a bot/model to use for the conversation.
 - `/imagine` - Generate images using BingImageCreator.
-- `/setcookie <cookie>` - Set the POE cookie value.
+- `/setcookie <cookie_type> <cookie_value>` - Set the Poe or Bing cookie value. Supported cookie types are: POE_COOKIE, BING_AUTH_COOKIE
 - `/restart` - Restart the bot and set everything back to the default.
 - `/help` - Show the available commands.
 - Send any text message to the bot and receive a response from the selected bot/model. In group chats, the bot will only respond to messages that mention the bot or are replies to its messages.

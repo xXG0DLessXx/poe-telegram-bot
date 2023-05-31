@@ -9,6 +9,7 @@ This is a Telegram bot that allows you to interact with AI models from the websi
 - Help command to show available commands
 - Works in both private chats and group chats
 - Knows your Telegram nickname and @username
+- Logs the last 20 messages betwen you and the bot, and sends them as a single message to the AI model, as a reminder, for better memory and context.
 
 ## Setup
 1. Clone this repository to your local machine.
@@ -38,8 +39,8 @@ ALLOWED_USERS=<COMMA-SEPARATED LIST OF ALLOWED USER IDS (Exampe ID's:1234567890,
 ALLOWED_CHATS=<COMMA-SEPARATED LIST OF ALLOWED CHAT IDS (Example ID's:-1001234567890,-1009876543210)>
 BING_AUTH_COOKIE=<your_auth_cookie_here>
 ```
-
-7. Run the bot using `python3 start.py`. (It should install all needed dependencies automatically in a virtual environment).
+7. Set the "start.sh" script to executable using the command `chmod 777 start.sh`
+8. Run the bot using `./start.sh`. (It should install all needed dependencies automatically in a virtual environment).
 
 ## Usage
 - `/start` - Start the bot and receive a welcome message.

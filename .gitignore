@@ -1,3 +1,4 @@
 .env
 env/*
 PoeAccounts.txt
+chat_log.txt

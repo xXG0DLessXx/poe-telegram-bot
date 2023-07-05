@@ -1,4 +1,4 @@
-poe_api>=0.4.6
+poe_api>=0.4.8
 python-dotenv==1.0.0
 python-telegram-bot==20.3
-BingImageCreator>=0.4.2
+BingImageCreator>=0.4.4
